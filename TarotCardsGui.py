@@ -1,31 +1,35 @@
 import random
 import tkinter
 import tkinter.messagebox
+import requests
+import json
 
-#Dict of card names and definitions
+BASE_URL = "https://tarotapi.dev/api/v1/cards/"
+
+#Dict of card long and short names for api call
 tarot = {
-    "The Magician": "TheMagicianDesc", 
-    "The High Priestess": "TheHighPriestessDesc", 
-    "The Empress": "TheEmpressDesc", 
-    "The Emperor": "TheEmperorDesc", 
-    "The Hierophant": "TheHierophantDesc", 
-    "The Lovers": "TheLoversDesc", 
-    "The Chariot": "TheChariotDesc", 
-    "Strength": "StrengthDesc", 
-    "The Hermit": "TheHermitDesc", 
-    "Wheel of Fortune": "WheelofFortuneDesc", 
-    "Justice": "JusticeDesc", 
-    "The Hanged Man": "TheHangedManDesc", 
-    "Death": "DeathDesc", 
-    "Temperance": "TemperanceDesc", 
-    "The Devil": "TheDevilDesc", 
-    "The Tower": "TheTowerDesc", 
-    "The Star": "TheStarDesc", 
-    "The Moon": "TheMoonDesc", 
-    "The Sun": "TheSunDesc", 
-    "Judgement": "JudgementDesc", 
-    "The World": "TheWorldDesc", 
-    "The Fool": "TheFoolDesc"
+    "The Magician": "ar01", 
+    "The High Priestess": "ar02", 
+    "The Empress": "ar03", 
+    "The Emperor": "ar04", 
+    "The Hierophant": "ar05", 
+    "The Lovers": "ar06", 
+    "The Chariot": "ar07", 
+    "Strength": "ar08", 
+    "The Hermit": "ar09", 
+    "Wheel of Fortune": "ar10", 
+    "Justice": "ar11", 
+    "The Hanged Man": "ar12", 
+    "Death": "ar13", 
+    "Temperance": "ar14", 
+    "The Devil": "ar15", 
+    "The Tower": "ar16", 
+    "The Star": "ar17", 
+    "The Moon": "ar18", 
+    "The Sun": "ar19", 
+    "The Last Judgement": "ar20", 
+    "The World": "ar21", 
+    "The Fool": "ar00"
 }
 
 #Initialise Window
@@ -57,13 +61,13 @@ def drawCards():
         cards["present"] = list(tarot)[card2]
         cards["future"] = list(tarot)[card3]
 
-        resultBox1.replace(1.0, "end", cards["past"])
+        resultBox1.replace(1.0, "end", "Your past card is: " + cards["past"])
         resultBox1.config(state = 'disabled')
 
-        resultBox2.replace(1.0, "end", cards["present"])
+        resultBox2.replace(1.0, "end", "Your present card is: " + cards["present"])
         resultBox2.config(state = 'disabled')
 
-        resultBox3.replace(1.0, "end", cards["future"])
+        resultBox3.replace(1.0, "end", "Your future card is: " + cards["future"])
         resultBox3.config(state = 'disabled')
 
         drawButton.destroy()
@@ -71,17 +75,22 @@ def drawCards():
     except:
         drawCards()       
 
+def getCardDescription(cardShortName):
+    response = requests.get(BASE_URL + cardShortName)
+    cardData = response.json()
+    return str(cardData['card']['meaning_up'])
+
 def onClick(event):        
     match str(event.widget):
         case ".!text":
-            card = resultBox1.get(1.0, "end")[:-1]
-            tkinter.messagebox.showinfo(card + " Description", tarot[card]) 
+            card = resultBox1.get(1.0, "end")[:-1].lstrip("Your past card is: ")
+            tkinter.messagebox.showinfo(card + " Description", getCardDescription(tarot[card])) 
         case ".!text2":
-            card = resultBox2.get(1.0, "end")[:-1]
-            tkinter.messagebox.showinfo(card + " Description", tarot[card]) 
+            card = resultBox2.get(1.0, "end")[:-1].lstrip("Your present card is: ")
+            tkinter.messagebox.showinfo(card + " Description", getCardDescription(tarot[card])) 
         case ".!text3":
-            card = resultBox3.get(1.0, "end")[:-1]
-            tkinter.messagebox.showinfo(card + " Description", tarot[card]) 
+            card = resultBox3.get(1.0, "end")[:-1].lstrip("Your future card is: ")
+            tkinter.messagebox.showinfo(card + " Description", getCardDescription(tarot[card])) 
 
 def textBind():
     resultBox1.bind("<Button-1>", onClick)
