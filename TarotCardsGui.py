@@ -35,18 +35,18 @@ tarot = {
 #Initialise Window
 root=tkinter.Tk()
 root.title("Tarot Cards by Marcel")
-root.geometry("400x320")
+root.geometry("450x320")
 
 #Create GUI
-resultBox1 = tkinter.Text(root, height=2, width=30, font=("Arial", 24))
+resultBox1 = tkinter.Text(root, height=2, width=40, font=("Arial", 24))
 resultBox1.insert(1.0,"Press the button to draw 3 cards")
 resultBox1.pack()
 
-resultBox2 = tkinter.Text(root, height=2, width=30, font=("Arial", 24))
+resultBox2 = tkinter.Text(root, height=2, width=40, font=("Arial", 24))
 resultBox2.insert(1.0,"")
 resultBox2.pack()
 
-resultBox3 = tkinter.Text(root, height=2, width=30, font=("Arial", 24))
+resultBox3 = tkinter.Text(root, height=2, width=40, font=("Arial", 24))
 resultBox3.insert(1.0,"")
 resultBox3.pack()
 
