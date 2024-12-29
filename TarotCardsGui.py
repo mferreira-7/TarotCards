@@ -58,8 +58,13 @@ def drawCards():
         cards["future"] = list(tarot)[card3]
 
         resultBox1.replace(1.0, "end", cards["past"])
+        resultBox1.config(state = 'disabled')
+
         resultBox2.replace(1.0, "end", cards["present"])
+        resultBox2.config(state = 'disabled')
+
         resultBox3.replace(1.0, "end", cards["future"])
+        resultBox3.config(state = 'disabled')
 
         drawButton.destroy()
         textBind()
@@ -70,13 +75,13 @@ def onClick(event):
     match str(event.widget):
         case ".!text":
             card = resultBox1.get(1.0, "end")[:-1]
-            print(tarot[card])
+            tkinter.messagebox.showinfo(card + " Description", tarot[card]) 
         case ".!text2":
             card = resultBox2.get(1.0, "end")[:-1]
-            print(tarot[card])
+            tkinter.messagebox.showinfo(card + " Description", tarot[card]) 
         case ".!text3":
             card = resultBox3.get(1.0, "end")[:-1]
-            print(tarot[card])
+            tkinter.messagebox.showinfo(card + " Description", tarot[card]) 
 
 def textBind():
     resultBox1.bind("<Button-1>", onClick)
